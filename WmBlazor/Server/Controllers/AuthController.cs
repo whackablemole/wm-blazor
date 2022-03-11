@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using System.Security.Claims;
-using Microsoft.EntityFrameworkCore;
 
 namespace WmBlazor.Server.Controllers
 {
@@ -40,7 +38,7 @@ namespace WmBlazor.Server.Controllers
             await _dataContext.SaveChangesAsync();
 
             // Return the list of users (just for demonstration purposes)
-            return Ok(await _dataContext.Users.ToListAsync());
+            return Ok($"User {user.Username} has been added");
 
         }
 

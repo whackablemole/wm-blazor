@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WmBlazor.Server.Data;
 
@@ -11,9 +12,10 @@ using WmBlazor.Server.Data;
 namespace WmBlazor.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220310235457_AddDevelopers")]
+    partial class AddDevelopers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "System Era Softworks is a small development studio led by veteran game developers headquartered in Seattle, Washington. We are currently working on our first game, Astroneer.",
+                            Description = "System Era Softworks are an indie developer famous for Astroneer",
                             Name = "System Era Softworks"
                         },
                         new
@@ -70,8 +72,8 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 5,
-                            Description = "Not as bad as EA",
-                            Name = "Developer: HB Studios Multimedia Ltd. "
+                            Description = "Ewwwwwww",
+                            Name = "EA Sports"
                         });
                 });
 
@@ -97,14 +99,9 @@ namespace WmBlazor.Server.Migrations
                     b.Property<decimal?>("PriceGb")
                         .HasColumnType("decimal(8,2)");
 
-                    b.Property<int>("PublisherId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("DeveloperId");
-
-                    b.HasIndex("PublisherId");
 
                     b.ToTable("Games");
 
@@ -112,20 +109,18 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "A city-building game by Colossal Order",
+                            Description = "A city-building game by Colossal Order.",
                             DeveloperId = 1,
                             Name = "Cities Skylines",
-                            PriceGb = 22.99m,
-                            PublisherId = 1
+                            PriceGb = 22.99m
                         },
                         new
                         {
                             Id = 2,
-                            Description = "A cute little space exploration game",
+                            Description = "A space exploration game by System Era Softworks",
                             DeveloperId = 2,
                             Name = "Astroneer",
-                            PriceGb = 23.79m,
-                            PublisherId = 2
+                            PriceGb = 23.79m
                         },
                         new
                         {
@@ -133,8 +128,7 @@ namespace WmBlazor.Server.Migrations
                             Description = "A combat flight simulator by BANDAI NAMCO Studios Inc.",
                             DeveloperId = 3,
                             Name = "Ace Combat 7: Skies Unknown",
-                            PriceGb = 49.99m,
-                            PublisherId = 3
+                            PriceGb = 49.99m
                         },
                         new
                         {
@@ -142,70 +136,15 @@ namespace WmBlazor.Server.Migrations
                             Description = "A racing simulator by Kunos Simulazoni",
                             DeveloperId = 4,
                             Name = "Assetto Corsa Competizione",
-                            PriceGb = 34.99m,
-                            PublisherId = 4
+                            PriceGb = 34.99m
                         },
                         new
                         {
                             Id = 5,
-                            Description = "A golf simulator",
+                            Description = "A golf simulator by EA Sports. Eeeeewww",
                             DeveloperId = 5,
                             Name = "PGA Tour 2K21",
-                            PriceGb = 49.99m,
-                            PublisherId = 5
-                        });
-                });
-
-            modelBuilder.Entity("WmBlazor.Shared.Publisher", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Publishers");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "We create the games. You create the stories.",
-                            Name = "Paradox Interactive"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "System Era Softworks is a small development studio led by veteran game developers headquartered in Seattle, Washington. We are currently working on our first game, Astroneer.",
-                            Name = "System Era Softworks"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "BANDAI NAMCO Entertainment, is a leading interactive entertainment software publisher known for creating and publishing many of the industry top video game franchises.",
-                            Name = "BANDAI NAMCO Entertainment"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "505 Games is a global game publisher focused on offering a broad selection of titles for players of all ages and levels.",
-                            Name = "505 Games"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "2K develops and publishes critically-acclaimed franchises such as BioShock, Borderlands, Sid Meier’s Civilization, XCOM, WWE 2K, and NBA 2K.",
-                            Name = "2K"
+                            PriceGb = 49.99m
                         });
                 });
 
@@ -278,15 +217,7 @@ namespace WmBlazor.Server.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("WmBlazor.Shared.Publisher", "Publisher")
-                        .WithMany("Games")
-                        .HasForeignKey("PublisherId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Developer");
-
-                    b.Navigation("Publisher");
                 });
 
             modelBuilder.Entity("WmBlazor.Shared.User", b =>
@@ -301,11 +232,6 @@ namespace WmBlazor.Server.Migrations
                 });
 
             modelBuilder.Entity("WmBlazor.Shared.Developer", b =>
-                {
-                    b.Navigation("Games");
-                });
-
-            modelBuilder.Entity("WmBlazor.Shared.Publisher", b =>
                 {
                     b.Navigation("Games");
                 });

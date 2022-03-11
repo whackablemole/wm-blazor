@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WmBlazor.Server.Data;
 
@@ -11,9 +12,10 @@ using WmBlazor.Server.Data;
 namespace WmBlazor.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20220311001808_AddPublishers")]
+    partial class AddPublishers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,7 +54,7 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "System Era Softworks is a small development studio led by veteran game developers headquartered in Seattle, Washington. We are currently working on our first game, Astroneer.",
+                            Description = "System Era Softworks are an indie developer famous for Astroneer",
                             Name = "System Era Softworks"
                         },
                         new
@@ -112,7 +114,7 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 1,
-                            Description = "A city-building game by Colossal Order",
+                            Description = "A city-building game by Colossal Order.",
                             DeveloperId = 1,
                             Name = "Cities Skylines",
                             PriceGb = 22.99m,
@@ -121,7 +123,7 @@ namespace WmBlazor.Server.Migrations
                         new
                         {
                             Id = 2,
-                            Description = "A cute little space exploration game",
+                            Description = "System Era Softworks is a small development studio led by veteran game developers headquartered in Seattle, Washington. We are currently working on our first game, Astroneer.",
                             DeveloperId = 2,
                             Name = "Astroneer",
                             PriceGb = 23.79m,
