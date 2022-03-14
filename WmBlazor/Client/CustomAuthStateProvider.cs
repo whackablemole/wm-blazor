@@ -25,8 +25,15 @@ namespace WmBlazor.Client
 
             if (!string.IsNullOrEmpty(token))
             {
-                identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
-                _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                // Try catch here as the token value is set to 'User does not exist' if the login doesn't exist. This then fails the token parse
+                try
+                {
+                    identity = new ClaimsIdentity(ParseClaimsFromJwt(token), "jwt");
+                    _http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token.Replace("\"", ""));
+                } catch
+                {
+                    Console.WriteLine("Token is valid");
+                }
             }
 
             var user = new ClaimsPrincipal(identity);
