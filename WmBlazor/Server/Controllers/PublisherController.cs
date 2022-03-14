@@ -17,13 +17,13 @@ namespace WmBlazor.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Publisher>>> Get()
         {
-            return Ok(await _dataContext.Publishers.Include(publisher => publisher.Games).ToListAsync());
+            return Ok(await _dataContext.Publishers.ToListAsync());
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<List<Publisher>>> Get(int id)
         {
-            var dbPub = await _dataContext.Publishers.Include(publisher => publisher.Games).FirstOrDefaultAsync(publisher => publisher.Id == id);
+            var dbPub = await _dataContext.Publishers.FindAsync(id);
             if (dbPub == null)
                 return BadRequest("Publisher not found.");
 
