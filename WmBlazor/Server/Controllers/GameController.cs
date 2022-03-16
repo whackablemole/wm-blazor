@@ -16,13 +16,13 @@ namespace WmBlazor.Server.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Game>>> Get()
+        public async Task<ActionResult<List<Game>>> GetGames()
         {
-            return Ok(await _dataContext.Games.Include(game => game.Developer).ToListAsync());
+            return Ok(await _dataContext.Games.Include(g => g.Publisher).Include(gm => gm.Developer).ToListAsync());
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<List<Game>>> Get(int id)
+        public async Task<ActionResult<Game>> Get(int id)
         {
             var dbGame = _dataContext.Games.Include(game => game.Developer).FirstOrDefault(game => game.Id == id);
             if (dbGame == null)
@@ -32,16 +32,16 @@ namespace WmBlazor.Server.Controllers
         }
 
         [HttpPost, Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Game>> AddGame(Game game)
+        public async Task<ActionResult<List<Game>>> AddGame(Game game)
         {
             _dataContext.Games.Add(game);
             await _dataContext.SaveChangesAsync();
             // Once it is saved, the primary key will be added to the existing game as an Id, so we can then use it to fetch the newly added game
-            return Ok(await _dataContext.Games.FindAsync(game.Id));
+            return Ok(await _dataContext.Games.Include(g => g.Publisher).Include(gm => gm.Developer).ToListAsync());
         }
 
         [HttpPut, Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Game>> UpdateGame(Game request)
+        public async Task<ActionResult<List<Game>>> UpdateGame(Game request)
         {
             var dbGame = await _dataContext.Games.FindAsync(request.Id);
             if (dbGame == null)
@@ -50,14 +50,17 @@ namespace WmBlazor.Server.Controllers
             dbGame.Name = request.Name;
             dbGame.Description = request.Description;
             dbGame.PriceGb = request.PriceGb;
+            dbGame.DeveloperId = request.DeveloperId;
+            dbGame.PublisherId = request.PublisherId;
 
             await _dataContext.SaveChangesAsync();
 
-            return Ok(await _dataContext.Games.FindAsync(request.Id));
+            return Ok(await _dataContext.Games.Include(g => g.Publisher).Include(gm => gm.Developer).ToListAsync());
+            
         }
 
-        [HttpDelete, Authorize(Roles = "Admin")]
-        public async Task<ActionResult<Game>> Delete(int id)
+        [HttpDelete("{id}"), Authorize(Roles = "Admin")]
+        public async Task<ActionResult<List<Game>>> Delete(int id)
         {
             var dbGame = await _dataContext.Games.FindAsync(id);
             if (dbGame == null)
@@ -65,8 +68,7 @@ namespace WmBlazor.Server.Controllers
 
             _dataContext.Games.Remove(dbGame);
             await _dataContext.SaveChangesAsync();
-            return Ok("Game deleted.");
-
+            return Ok(await _dataContext.Games.Include(g => g.Developer).Include(g => g.Publisher).ToListAsync());
         }
 
     }

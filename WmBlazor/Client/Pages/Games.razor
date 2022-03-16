@@ -1,9 +1,55 @@
 ﻿@page "/games"
+@inject IGameService GameService
+@inject NavigationManager NavigationManager
+@inject HttpClient Http
 
 <h3>Games</h3>
 
-
+<div class="row">
+    <div class="col-12">
+        
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Developer</th>
+                        <th>Publisher</th>
+                        <th>Price</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var game in GameService.Games)
+                    {
+                        <tr>
+                            <td>@game.Name</td>
+                            <td>@game.Developer.Name</td>
+                            <td>@game.Publisher.Name</td>
+                            <td>£@game.PriceGb</td>
+                            <td>
+                                <button class="btn btn-primary" @onclick="(() => ShowGame(game.Id))"><i class="oi oi-pencil"></i></button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+    </div>
+</div>
 
 @code {
 
+    protected override async Task OnInitializedAsync()
+    {
+        await GameService.GetGames();
+    }
+
+    void ShowGame(int id)
+    {
+        NavigationManager.NavigateTo($"game/{id}");
+    }
+
+    void CreateNewGame()
+    {
+        NavigationManager.NavigateTo("/game");
+    }
 }

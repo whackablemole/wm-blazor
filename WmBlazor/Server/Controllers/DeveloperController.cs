@@ -52,7 +52,7 @@ namespace WmBlazor.Server.Controllers
 
             await _dataContext.SaveChangesAsync();
 
-            return Ok(await _dataContext.Developers.Include(developer => developer.Games).FirstOrDefaultAsync(developer => developer.Id == dbDev.Id));
+            return Ok(await _dataContext.Developers.Include(developer => developer.Games).ToListAsync());//.FirstOrDefaultAsync(developer => developer.Id == dbDev.Id));
         }
 
         [HttpDelete, Authorize(Roles = "Admin")]

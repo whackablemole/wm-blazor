@@ -17,7 +17,17 @@ namespace WmBlazor.Shared
         public int DeveloperId { get; set; }
         public int PublisherId { get; set; }
 
-        public virtual Developer Developer { get; set; }
-        public virtual Publisher Publisher { get; set; }
+        public virtual Developer ?Developer { get; set; }
+        public virtual Publisher ?Publisher { get; set; }
+    }
+
+    public class GameView
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public decimal ?PriceGb { get; set; }
+        public int DeveloperId { get; set; }
+        public int PublisherId { get; set; }
     }
 }
