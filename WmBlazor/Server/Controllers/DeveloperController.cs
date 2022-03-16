@@ -31,6 +31,12 @@ namespace WmBlazor.Server.Controllers
             return Ok(dbDev);
         }
 
+        [HttpGet("{id}/games")]
+        public async Task<ActionResult<List<Game>>> GetGames(int id)
+        {
+            return Ok(await _dataContext.Games.Where(game => game.DeveloperId == id).ToListAsync());
+        }
+
         [HttpPost, Authorize(Roles = "Admin")]
         public async Task<ActionResult<Developer>> AddDeveloper(Developer developer)
         {
@@ -64,7 +70,7 @@ namespace WmBlazor.Server.Controllers
 
             _dataContext.Developers.Remove(dbDev);
             await _dataContext.SaveChangesAsync();
-            return Ok("Developer deleted.");
+            return Ok(await _dataContext.Developers.Include(developer => developer.Games).ToListAsync());
 
         }
 
