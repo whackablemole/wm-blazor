@@ -12,8 +12,8 @@ using WmBlazor.Server.Data;
 namespace WmBlazor.Server.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220311002904_FixedSeeds")]
-    partial class FixedSeeds
+    [Migration("20220316221353_CreateTags")]
+    partial class CreateTags
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,21 @@ namespace WmBlazor.Server.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("GameTag", b =>
+                {
+                    b.Property<int>("GamesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TagsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("GamesId", "TagsId");
+
+                    b.HasIndex("TagsId");
+
+                    b.ToTable("GameTag");
+                });
 
             modelBuilder.Entity("WmBlazor.Shared.Developer", b =>
                 {
@@ -240,6 +255,130 @@ namespace WmBlazor.Server.Migrations
                         });
                 });
 
+            modelBuilder.Entity("WmBlazor.Shared.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            IsActive = true,
+                            Name = "Flight"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            IsActive = true,
+                            Name = "Jet"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            IsActive = true,
+                            Name = "Military"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            IsActive = true,
+                            Name = "War"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            IsActive = true,
+                            Name = "Shooter"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            IsActive = true,
+                            Name = "Arcade"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            IsActive = true,
+                            Name = "City Builder"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            IsActive = true,
+                            Name = "Simulation"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            IsActive = true,
+                            Name = "Building"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            IsActive = true,
+                            Name = "Sports"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            IsActive = true,
+                            Name = "Local Multiplayer"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            IsActive = true,
+                            Name = "Multiplayer"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            IsActive = true,
+                            Name = "Open World"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            IsActive = true,
+                            Name = "Racing"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            IsActive = true,
+                            Name = "Automobile Sim"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            IsActive = true,
+                            Name = "VR"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            IsActive = true,
+                            Name = "Golf"
+                        });
+                });
+
             modelBuilder.Entity("WmBlazor.Shared.User", b =>
                 {
                     b.Property<string>("Username")
@@ -261,15 +400,21 @@ namespace WmBlazor.Server.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+                });
 
-                    b.HasData(
-                        new
-                        {
-                            Username = "mtownsend",
-                            PasswordHash = new byte[] { 80, 99, 109, 75, 122, 43, 101, 71, 108, 101, 112, 75, 99, 75, 48, 66, 50, 76, 115, 83, 99, 73, 110, 85, 71, 72, 52, 43, 90, 102, 47, 51, 48, 75, 117, 98, 108, 122, 51, 80, 67, 85, 48, 52, 114, 49, 104, 57, 49, 109, 43, 114, 112, 53, 75, 87, 71, 102, 74, 89, 43, 65, 113, 102, 102, 99, 113, 112, 90, 97, 85, 51, 70, 83, 98, 75, 82, 121, 70, 103, 107, 98, 49, 72, 106, 119, 61, 61 },
-                            PasswordSalt = new byte[] { 97, 107, 87, 120, 109, 120, 85, 67, 48, 118, 114, 68, 100, 118, 66, 121, 120, 49, 76, 70, 68, 48, 114, 77, 99, 66, 73, 90, 98, 51, 54, 65, 53, 50, 75, 77, 78, 90, 57, 84, 70, 50, 50, 105, 89, 55, 103, 118, 73, 49, 65, 90, 112, 54, 82, 77, 116, 55, 71, 117, 104, 43, 83, 84, 83, 50, 47, 101, 68, 111, 120, 113, 74, 118, 109, 86, 79, 116, 83, 113, 115, 78, 54, 65, 74, 100, 54, 73, 114, 98, 120, 54, 49, 113, 106, 51, 111, 114, 76, 106, 122, 87, 110, 52, 53, 105, 90, 97, 81, 115, 53, 67, 113, 50, 118, 111, 113, 102, 122, 70, 90, 101, 87, 118, 72, 110, 68, 78, 120, 51, 52, 71, 87, 116, 104, 68, 99, 104, 84, 120, 99, 113, 113, 76, 114, 70, 69, 121, 122, 57, 76, 51, 52, 87, 83, 48, 121, 65, 54, 79, 120, 108, 52, 81, 100, 100, 56, 100, 66, 121, 89, 61 },
-                            RoleId = 2
-                        });
+            modelBuilder.Entity("GameTag", b =>
+                {
+                    b.HasOne("WmBlazor.Shared.Game", null)
+                        .WithMany()
+                        .HasForeignKey("GamesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("WmBlazor.Shared.Tag", null)
+                        .WithMany()
+                        .HasForeignKey("TagsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("WmBlazor.Shared.Game", b =>

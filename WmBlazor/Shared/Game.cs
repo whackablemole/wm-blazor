@@ -19,6 +19,8 @@ namespace WmBlazor.Shared
 
         public virtual Developer ?Developer { get; set; }
         public virtual Publisher ?Publisher { get; set; }
+        public ICollection<Tag>? Tags { get; set; }
+
     }
 
     public class GameView
